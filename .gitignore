@@ -1,0 +1,20 @@
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+.env
+.env.local
+*.egg-info/
+build/
+dist/
+
+# Données locales — privées
+data/prospects.json
+data/missions.json
+data/kpis.json
+data/content.json
+data/tasks.json
+data/strategy.md
+data/email_log.jsonl
+data/drafts/
