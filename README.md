@@ -19,6 +19,9 @@ pip install -e .
 cp .env.example .env
 # édite .env : ANTHROPIC_API_KEY, identité société, SMTP optionnel
 mouns init
+# (optionnel mais recommandé) : pré-charge un plan stratégique 12 mois,
+# 4 objectifs Q1, 12 idées de contenu et 3 templates d'emails
+python scripts/bootstrap.py
 ```
 
 ## Usage
