@@ -25,9 +25,45 @@ def iso(d: date) -> str:
     return d.isoformat()
 
 
+SM_PROJECT_FOLDERS = (
+    "01_Strategie",
+    "02_Prospection",
+    "03_Missions",
+    "04_Clients",
+    "05_Formation_MS_Project",
+    "06_LinkedIn",
+    "07_Administratif",
+    "08_Finances",
+    "09_Portfolio",
+    "10_Opportunites",
+)
+
+
 def main():
     cfg = load_config()
     today = date.today()
+
+    # ---------- 0. Arborescence documentaire SM_PROJECT/ ----------
+    sm_root = cfg.data_dir / "SM_PROJECT"
+    for f in SM_PROJECT_FOLDERS:
+        (sm_root / f).mkdir(parents=True, exist_ok=True)
+    # Index README dans chaque section pour expliquer son rôle
+    sections_doc = {
+        "01_Strategie": "Plans 12 mois, revues hebdo/mensuelles/trimestrielles, pivots, notes de positionnement.",
+        "02_Prospection": "Listes de cibles, séquences d'emails et messages LinkedIn, scripts d'appel.",
+        "03_Missions": "Documents de missions en cours (cadrage, livrables, plannings, comptes rendus).",
+        "04_Clients": "Fiches clients, retours d'expérience, contrats-cadres, témoignages.",
+        "05_Formation_MS_Project": "Supports, programmes pédagogiques, parcours certifiants, exercices.",
+        "06_LinkedIn": "Posts publiés, articles longs, calendrier éditorial, captures et analytics.",
+        "07_Administratif": "Statuts, attestations Qualiopi, RGPD, URSSAF, attestations OPCO.",
+        "08_Finances": "CA, factures, devis, prévisionnel, échéances fiscales.",
+        "09_Portfolio": "Cas d'étude anonymisés, témoignages, références mobilisables en RDV.",
+        "10_Opportunites": "AO en cours, opportunités détectées sur Malt/Freelance/LinkedIn, missions à candidater.",
+    }
+    for folder, desc in sections_doc.items():
+        readme = sm_root / folder / "README.md"
+        if not readme.exists():
+            readme.write_text(f"# {folder}\n\n{desc}\n", encoding="utf-8")
     q1_end = date(today.year, 3, 31) if today.month <= 3 else date(today.year + 1, 3, 31)
     q2_end = date(today.year, 6, 30) if today.month <= 6 else date(today.year + 1, 6, 30)
 
@@ -342,6 +378,7 @@ Bien à vous,
 Mouns initialisé pour {cfg.company} ({cfg.owner_name}).
 
 Données créées dans {cfg.data_dir} :
+  • SM_PROJECT/           — arborescence documentaire en 10 sections
   • strategy.md           — plan stratégique 12 mois (ICP, leviers, montage)
   • kpis.json             — 4 objectifs (3 Q1 + 1 semestriel)
   • content.json          — 12 idées de contenus (LinkedIn / article / webinaire)

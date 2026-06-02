@@ -5,9 +5,9 @@ acceptent et retournent des chaînes JSON ou du texte ; elles persistent leurs e
 dans le répertoire `data/` configuré.
 """
 
-from . import prospects, emails, visibility, finance, strategy, tasks
+from . import prospects, emails, visibility, finance, strategy, tasks, documents
 
-ALL_MODULES = [prospects, emails, visibility, finance, strategy, tasks]
+ALL_MODULES = [prospects, emails, visibility, finance, strategy, tasks, documents]
 
 
 def all_tools():

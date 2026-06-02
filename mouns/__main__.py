@@ -3,7 +3,8 @@
 Commandes :
     mouns chat         — session interactive (REPL)
     mouns brief        — affiche le brief du jour et termine
-    mouns daily        — exécute la routine quotidienne (relances, idées contenu, KPI)
+    mouns daily        — exécute la routine quotidienne (dashboard + plan ABCD + drafts)
+    mouns weekly       — revue hebdomadaire (vendredi) : analyse + plan semaine suivante
     mouns ask "..."    — pose une question unique en non-interactif
     mouns init         — initialise les fichiers de données vides
 """
@@ -71,13 +72,29 @@ def cmd_brief():
 
 def cmd_daily():
     cmd_ask(
-        "Lance la routine quotidienne : "
-        "1) Diagnostique le pipeline et les KPI. "
-        "2) Liste les relances dues et propose pour chacune un brouillon d'email personnalisé. "
-        "3) Propose 1 idée de contenu LinkedIn pour cette semaine. "
-        "4) Ajoute les tâches correspondantes dans la todo. "
-        "5) Termine par un compte rendu structuré : ce qui a été fait, ce qui attend "
-        "Mounir, ce qui suit demain."
+        "Routine quotidienne. Produis dans l'ordre, en restant CONCIS : "
+        "1) Dashboard quotidien (opportunités, leads, missions à candidater, "
+        "actions, risques, alertes 🔴/🟠 en tête). "
+        "2) Plan d'action ABCD (A = impact élevé / effort faible…). "
+        "3) Pour chaque relance en retard : un brouillon d'email via draft_email. "
+        "4) 3 idées de post LinkedIn + 1 post prêt à publier (stocké via "
+        "save_document dans 06_LinkedIn) + 1 idée d'article + 1 idée contenu formation. "
+        "5) Mets à jour les tâches (add_task / complete_task). "
+        "6) Compte rendu final : ce qui a été fait, ce qui attend Mounir, ce qui suit demain."
+    )
+
+
+def cmd_weekly():
+    cmd_ask(
+        "Revue hebdomadaire du vendredi. Sois concis et structuré : "
+        "1) Bilan de la semaine (CA signé/encaissé, prospects ajoutés, "
+        "contenus publiés, missions converties). "
+        "2) CA potentiel généré (somme opportunités × probabilité). "
+        "3) Opportunités perdues + cause racine. "
+        "4) Axes d'amélioration concrets (3 max). "
+        "5) Plan d'action de la semaine suivante en ABCD. "
+        "6) Stocke la revue dans SM_PROJECT/01_Strategie/ via save_document "
+        "(nom : revue-semaine-AAAA-MM-DD.md)."
     )
 
 
@@ -138,6 +155,8 @@ def main(argv: list[str] | None = None) -> int:
         cmd_brief()
     elif cmd == "daily":
         cmd_daily()
+    elif cmd == "weekly":
+        cmd_weekly()
     elif cmd == "ask":
         if not rest:
             console.print("[red]Usage : mouns ask \"ta question\"[/red]")

@@ -33,7 +33,7 @@ def run_turn(messages: list[dict], cfg: Config | None = None) -> tuple[str, list
             }
         ],
         thinking={"type": "adaptive"},
-        output_config={"effort": "xhigh"},
+        output_config={"effort": "medium"},
         tools=all_tools(),
         messages=messages,
     )

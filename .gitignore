@@ -18,3 +18,10 @@ data/tasks.json
 data/strategy.md
 data/email_log.jsonl
 data/drafts/
+data/briefs/
+
+# SM_PROJECT/ : on garde le squelette (READMEs) mais on ignore le contenu
+data/SM_PROJECT/**
+!data/SM_PROJECT/
+!data/SM_PROJECT/*/
+!data/SM_PROJECT/*/README.md
