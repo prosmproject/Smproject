@@ -36,7 +36,7 @@ def load_config() -> Config:
     data_dir.mkdir(parents=True, exist_ok=True)
     (data_dir / "drafts").mkdir(exist_ok=True)
     return Config(
-        model=os.getenv("MOUNS_MODEL", "claude-opus-4-7"),
+        model=os.getenv("MOUNS_MODEL", "claude-sonnet-4-6"),
         api_key=os.getenv("ANTHROPIC_API_KEY"),
         data_dir=data_dir,
         owner_name=os.getenv("SM_OWNER_NAME", "Mounir Stili"),
