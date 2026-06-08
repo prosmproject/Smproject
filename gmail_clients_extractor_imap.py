@@ -76,6 +76,17 @@ def extract_phones(text: str) -> list[str]:
     return list(set(cleaned))
 
 
+def safe_decode(payload: bytes, charset: str | None) -> str:
+    for enc in (charset, "utf-8", "latin-1"):
+        if not enc:
+            continue
+        try:
+            return payload.decode(enc, errors="ignore")
+        except (LookupError, UnicodeDecodeError):
+            continue
+    return payload.decode("utf-8", errors="ignore")
+
+
 def decode_mime(value: str) -> str:
     if not value:
         return ""
@@ -83,7 +94,7 @@ def decode_mime(value: str) -> str:
     decoded = ""
     for text, enc in parts:
         if isinstance(text, bytes):
-            decoded += text.decode(enc or "utf-8", errors="ignore")
+            decoded += safe_decode(text, enc)
         else:
             decoded += text
     return decoded
@@ -95,16 +106,18 @@ def get_text_body(msg: email.message.Message) -> str:
             if part.get_content_type() == "text/plain":
                 try:
                     payload = part.get_payload(decode=True)
-                    charset = part.get_content_charset() or "utf-8"
-                    return payload.decode(charset, errors="ignore")
+                    if payload is None:
+                        continue
+                    return safe_decode(payload, part.get_content_charset())
                 except Exception:
                     continue
         return ""
     else:
         try:
             payload = msg.get_payload(decode=True)
-            charset = msg.get_content_charset() or "utf-8"
-            return payload.decode(charset, errors="ignore")
+            if payload is None:
+                return ""
+            return safe_decode(payload, msg.get_content_charset())
         except Exception:
             return ""
 
